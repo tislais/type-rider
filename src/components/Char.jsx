@@ -30,11 +30,11 @@ const active = `
 `
 
 const correct = `
-  bg-green-500
+  bg-green-200
 `
 
 const incorrect = `
-  bg-red-500
+  bg-red-200
 `
 
 export default Char;

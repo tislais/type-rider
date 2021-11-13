@@ -2,6 +2,7 @@ import Char from './Char';
 import { useEffect, useState } from 'react';
 
 const text = 'Hello, I am a string.'
+
 const textWithSpaces = text.replace(/ /g, '\u00a0')
 const textArray = textWithSpaces.split('')
 
@@ -12,9 +13,10 @@ const Typer = () => {
 
   useEffect(() => {
     const onKeyup = (e) => {
-      if(e.key !== 'Shift') {
-        console.log(e.key)
-        setActiveKey(prev => prev + 1)
+      if(activeKey !== textArray.length - 1) {
+        if (e.key !== 'Shift') setActiveKey(prev => prev + 1)
+      } else {
+        setActiveKey(0)
       }
     }
     window.addEventListener('keyup', onKeyup)
