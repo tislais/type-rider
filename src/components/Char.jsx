@@ -11,9 +11,7 @@ const Char = ({char, index, activeKey}) => {
   }
 
   return (
-    <div id={char.charCodeAt(0) + '-' + index} className={
-      div + isActiveClass(index, activeKey)
-    }>{char}</div>
+    <div className={div + isActiveClass(index, activeKey)}>{char}</div>
   )
 }
 
