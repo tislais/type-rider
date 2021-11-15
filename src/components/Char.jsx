@@ -1,20 +1,21 @@
 import React from 'react';
 const text = 'Hello, I am a string.'
 
-const Char = ({char, index, activeKey, correct}) => {
+const Char = ({char, index, activeKey, correct, tries}) => {
   const isActiveClass = (index, activeKey) => {
     if (activeKey === index) {
       return active
     } else {
-      // Return falsy value on isActive for || to work in className =
       return null
     }
   }
   const isCorrect = (input) => {
-    if(input) return 'bg-green-200'
+    if(tries >= 2 && input) return 'bg-yellow-100 text-green-800'
+    else if(input) return 'bg-green-200'
     else if(input === false) return incorrect
     else return null
   }
+
 
   return (
     <div id={char.charCodeAt(0) + '-' + index} className={

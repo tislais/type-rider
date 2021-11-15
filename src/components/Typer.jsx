@@ -7,7 +7,9 @@ const textWithSpaces = text.replace(/ /g, '\u00a0')
 //Retain 
 const textArray = text.split('')
 const mappedArray = textArray.map(char => {
-  return {char}
+  return {char,
+          tries: 0
+  }
 })
 const Typer = () => {
   //Keep track of entire text to keep track of correct T/F
@@ -37,7 +39,7 @@ const Typer = () => {
         console.log('correct');
         setSentence(prevSate => {
          return prevSate.map((item, i) => {
-              return (i === activeKey) ? {...item, correct: true} : item 
+              return (i === activeKey) ? {...item, correct: true, tries: item.tries + 1} : item 
           })
         })
       }
@@ -46,7 +48,7 @@ const Typer = () => {
         console.log('incorrect');
         setSentence(prevSate => {
           return prevSate.map((item, i) => {
-               return i === activeKey ? {...item, correct: false} : item 
+               return i === activeKey ? {...item, correct: false, tries: item.tries + 1} : item 
            })
          })
       }
@@ -55,6 +57,7 @@ const Typer = () => {
       } else {
         setActiveKey(0)
         setSentence(mappedArray)
+        
       }
     }
     window.addEventListener('keydown', onKeyDown)
@@ -69,8 +72,8 @@ const Typer = () => {
   return (
     <>
       <ul className={ul}>
-        {sentence.map(({char, correct}, index) => 
-          <Char key={index} char={char} index={index} activeKey={activeKey} correct={correct}/>
+        {sentence.map(({char, correct, tries}, index) => 
+          <Char key={index} char={char} index={index} activeKey={activeKey} correct={correct} tries={tries}/>
         )}
       </ul>
     </>

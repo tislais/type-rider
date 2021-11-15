@@ -4,7 +4,7 @@ import Typer from './components/Typer';
 
 function App() {
   return (
-    //<Sandbox/>
+    // <Sandbox/>
     <Typer />
   );
 }
