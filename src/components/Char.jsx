@@ -1,17 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-const Char = ({char, index, activeKey}) => {
+const Char = ({char, keyPressed, index, activeIndex}) => {
 
-  const isActiveClass = (index, activeKey) => {
-    if (activeKey === index) {
+  const [attempted, setAttempted] = useState(false)
+  const [isCorrect, setIsCorrect] = useState(false)
+
+  useEffect(() => {
+    if (activeIndex === index) setAttempted(true)
+    if (keyPressed === char) setIsCorrect(true)
+  }, [activeIndex, index, char, keyPressed])
+
+  const getClasses = (index, activeIndex, attempted) => {
+    if (activeIndex === index) {
       return active
-    } else {
-      return 'inactive';
+    }
+    if (attempted) {
+      if (activeIndex < index) {
+        return 'bg-yellow-100 text-green-600'
+      } 
+      else if (isCorrect) {
+        return correct
+      } 
+      else if (keyPressed !== char) {
+        return incorrect
+      }
     }
   }
 
+  
+
   return (
-    <div className={div + isActiveClass(index, activeKey)}>{char}</div>
+    <div className={div + getClasses(index, activeIndex, attempted)}>{char === ' ' ? '\u00a0' : char}</div>
   )
 }
 
@@ -28,11 +47,13 @@ const active = `
 `
 
 const correct = `
-  bg-green-200
+  bg-green-100
+  bg-opacity-50
 `
 
 const incorrect = `
-  bg-red-200
+  bg-red-100
+  bg-opacity-50
 `
 
 export default Char;

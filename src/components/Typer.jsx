@@ -2,29 +2,35 @@ import Char from './Char';
 import { useEffect, useState } from 'react';
 
 const text = 'Hello, I am a string.'
-const textWithSpaces = text.replace(/ /g, '\u00a0')
-const textArray = textWithSpaces.split('')
+// const textWithSpaces = text.replace(/ /g, '\u00a0')
+const textArray = text.split('')
 
 const Typer = () => {
 
   const [activeIndex, setActiveIndex] = useState(0);
-  console.log(activeIndex)
+  const [keyPressed, setKeyPressed] = useState('');
+
+  console.log(activeIndex, keyPressed)
 
   useEffect(() => {
-    const onKeyup = (e) => {
-      if(activeIndex !== textArray.length - 1) {
-        if (e.key === 'Backspace' && activeIndex !== 0) {
-          setActiveIndex(prev => prev - 1) 
-        }
-        else if (e.key !== 'Shift' && e.key !== 'Backspace') {
-          setActiveIndex(prev => prev + 1)
-        }
-      } else {
-        setActiveIndex(0)
+    const onKeypress = ({ key }) => {
+      setKeyPressed(key)
+      if(activeIndex <= textArray.length - 1) {
+        setActiveIndex(prev => prev + 1)
       }
     }
-    window.addEventListener('keyup', onKeyup)
-    return () => window.removeEventListener('keyup', onKeyup);
+
+    const onKeydown = ({ key }) => {
+      if (key === 'Backspace' && activeIndex !== 0) {
+        setActiveIndex(prev => prev - 1) 
+      }
+    }
+    window.addEventListener('keypress', onKeypress)
+    window.addEventListener('keydown', onKeydown)
+    return () => {
+      window.removeEventListener('keypress', onKeypress);
+      window.removeEventListener('keydown', onKeydown);
+    }
   });
 
   return (
@@ -34,8 +40,9 @@ const Typer = () => {
           <Char 
             key={index} 
             char={char} 
+            keyPressed={keyPressed}
             index={index} 
-            activeKey={activeIndex}
+            activeIndex={activeIndex}
           />
         )}
       </ul>
