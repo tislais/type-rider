@@ -15,8 +15,8 @@ const Typer = () => {
   const [activeKey, setActiveKey] = useState(0);
 
   useEffect(() => {
-    const onKeyup = (e) => {
-      console.log(e)
+    //Keydown can detect backspace, down so you can hold
+    const onKeyDown = (e) => {
       //If Backspace remove completed prop, exit function
       if(e.key === 'Backspace' && activeKey > 0){
         setActiveKey(prevState => prevState -1)
@@ -28,6 +28,10 @@ const Typer = () => {
         })
         return
       }
+    }
+    //Keypress seems to be more accurate, don't need to worry about shift
+    const onKeyPress = (e) => {
+      console.log(e)
       //Type correct char, set correct prop to true
       if(e.key === sentence[activeKey].char) {
         console.log('correct');
@@ -47,14 +51,18 @@ const Typer = () => {
          })
       }
       if(activeKey !== textArray.length - 1) {
-        if (e.key !== 'Shift') setActiveKey(prev => prev + 1)
+         setActiveKey(prev => prev + 1)
       } else {
         setActiveKey(0)
         setSentence(mappedArray)
       }
     }
-    window.addEventListener('keyup', onKeyup)
-    return () => window.removeEventListener('keyup', onKeyup);
+    window.addEventListener('keydown', onKeyDown)
+    window.addEventListener('keypress', onKeyPress)
+    return () => {
+      window.removeEventListener('keypress', onKeyPress);
+      window.removeEventListener('keydown', onKeyDown);
+    }
   });
 
 
